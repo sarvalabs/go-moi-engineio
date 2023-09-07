@@ -15,8 +15,7 @@ type EnvDriver interface {
 	ClusterID() string
 }
 
-// DependencyDriver represents an interface
-// for an engine's element dependency manager.
+// DependencyDriver represents an interface for an engine's element dependency manager.
 //
 // It must be expressible as a string and encodable with JSON and POLO.
 // It manages the dependency relationship between element pointers with
@@ -37,4 +36,12 @@ type DependencyDriver interface {
 	Contains(uint64) bool
 	Edges(uint64) []uint64
 	Dependencies(uint64) []uint64
+}
+
+// CryptoDriver represents an interface for cryptographic operations.
+// It can be used to validate signature formats and verify them for a public key.
+// This interfaces allows us to pass the capabilities of go-moi's crypto package to different engine runtimes.
+type CryptoDriver interface {
+	ValidateSignature(sig []byte) bool
+	VerifySignature(data, sig, pub []byte) (bool, error)
 }
