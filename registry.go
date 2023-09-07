@@ -12,10 +12,6 @@ type entry struct {
 // RegisterRuntime registers an EngineRuntime with the package along with a CryptoDriver for the runtime.
 // If a runtime instance already exists for the EngineKind, it is overwritten.
 func RegisterRuntime(runtime EngineRuntime, crypto CryptoDriver) {
-	if crypto == nil {
-		panic("attempting to register engine runtime without valid crypto driver")
-	}
-
 	registry[runtime.Kind()] = entry{runtime, crypto}
 }
 
