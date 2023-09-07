@@ -52,7 +52,7 @@ type Logic interface {
 type LogicID interface {
 	String() string
 	Bytes() []byte
-	Address() [32]byte
+	Address32() [32]byte
 }
 
 // LogicDescriptor is a container type returned by the CompileManifest method of EngineRuntime.
