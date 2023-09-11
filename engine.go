@@ -48,6 +48,8 @@ type Engine interface {
 type EngineRuntime interface {
 	// Kind returns the kind of engine that the factory can produce
 	Kind() EngineKind
+	// Version returns the semver version string of the engine runtime
+	Version() string
 
 	// SpawnEngine returns a new Engine instance and initializes it with some
 	// Fuel, a LogicDriver, the CtxDriver associated with the logic and an EnvDriver.
@@ -70,9 +72,9 @@ type EngineRuntime interface {
 	// callsite element pointer from a LogicDriver object
 	GetCallEncoder(*Callsite, Logic) (CallEncoder, error)
 
-	// DecodeDependencyDriver decodes the given bytes into a
-	// DepDriver that is supported by the engine runtime
-	DecodeDependencyDriver([]byte) (DependencyDriver, error)
+	// DecodeDependencyDriver decodes the given bytes of the given
+	// encoding into a DepDriver that is supported by the engine runtime
+	DecodeDependencyDriver([]byte, Encoding) (DependencyDriver, error)
 
 	// DecodeErrorResult decodes the given bytes into an
 	// ErrorResult that is used by the engine runtime

@@ -52,6 +52,10 @@ func (m *mockEngineRuntime) Kind() EngineKind {
 	return m.kind
 }
 
+func (m *mockEngineRuntime) Version() string {
+	return "v0.0.0"
+}
+
 func (m *mockEngineRuntime) SpawnEngine(_ EngineFuel, _ Logic, _ CtxDriver, _ EnvDriver) (Engine, error) {
 	return nil, nil
 }
@@ -72,7 +76,7 @@ func (m *mockEngineRuntime) GetCallEncoder(_ *Callsite, _ Logic) (CallEncoder, e
 	return nil, nil
 }
 
-func (m *mockEngineRuntime) DecodeDependencyDriver(_ []byte) (DependencyDriver, error) {
+func (m *mockEngineRuntime) DecodeDependencyDriver(_ []byte, _ Encoding) (DependencyDriver, error) {
 	return nil, nil
 }
 

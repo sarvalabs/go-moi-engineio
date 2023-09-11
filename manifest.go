@@ -12,12 +12,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// ManifestEncoding is an enum with variants that describe
-// encoding schemes supported for Manifest file objects.
-type ManifestEncoding int
+// Encoding is an enum with variants that describe
+// encoding schemes supported for file objects.
+type Encoding int
 
 const (
-	POLO ManifestEncoding = iota
+	POLO Encoding = iota
 	JSON
 	YAML
 )
@@ -66,7 +66,7 @@ type ManifestElementGenerator func() ManifestElementObject
 
 // NewManifest decodes the given raw data of the specified encoding type into a Manifest.
 // Fails if the encoding is unsupported or if the data is malformed.
-func NewManifest(data []byte, encoding ManifestEncoding) (*Manifest, error) {
+func NewManifest(data []byte, encoding Encoding) (*Manifest, error) {
 	manifest := new(Manifest)
 
 	switch encoding {
@@ -100,7 +100,7 @@ func ReadManifestFile(path string) (*Manifest, error) {
 
 	var (
 		extension string
-		encoding  ManifestEncoding
+		encoding  Encoding
 	)
 
 	switch extension = filepath.Ext(path); extension {
@@ -140,7 +140,7 @@ func (manifest Manifest) Hash() ([32]byte, error) {
 }
 
 // Encode returns the encoded bytes form of the Manifest for the specified encoding.
-func (manifest Manifest) Encode(encoding ManifestEncoding) ([]byte, error) {
+func (manifest Manifest) Encode(encoding Encoding) ([]byte, error) {
 	switch encoding {
 	case JSON:
 		return json.Marshal(manifest)
