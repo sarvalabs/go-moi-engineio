@@ -9,14 +9,14 @@ import (
 
 type mockRefProvider map[string]any
 
-func (m mockRefProvider) GetReference(ref ReferenceVal) (any, bool) {
+func (m mockRefProvider) GetReference(ref ReferenceValue) (any, bool) {
 	val, ok := m[string(ref)]
 
 	return val, ok
 }
 
 func TestReferenceVal_String(t *testing.T) {
-	ref := ReferenceVal("foo")
+	ref := ReferenceValue("foo")
 	assert.Equal(t, "ref<foo>", ref.String())
 }
 
@@ -42,14 +42,14 @@ func TestEncodeValues(t *testing.T) {
 		},
 		{
 			name:   "encode reference",
-			input:  ReferenceVal("myref"),
+			input:  ReferenceValue("myref"),
 			refs:   &mockRefProvider{"myref": 100},
 			output: []byte{0x03, 0x64},
 			err:    "",
 		},
 		{
 			name:   "encode reference without provider",
-			input:  ReferenceVal("myref"),
+			input:  ReferenceValue("myref"),
 			output: nil,
 			err:    "encountered reference value without a ref provider",
 		},

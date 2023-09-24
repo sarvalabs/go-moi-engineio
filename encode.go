@@ -15,18 +15,18 @@ type CallEncoder interface {
 	DecodeOutputs([]byte) (map[string]any, error)
 }
 
-// ReferenceVal is a reference identifier
+// ReferenceValue is a reference identifier
 // that resolves to an encodable value
-type ReferenceVal string
+type ReferenceValue string
 
-func (ref ReferenceVal) String() string {
+func (ref ReferenceValue) String() string {
 	return "ref<" + string(ref) + ">"
 }
 
 // ReferenceProvider resolves a ReferenceVal into
 // an encodable value confirming the resolution
 type ReferenceProvider interface {
-	GetReference(ReferenceVal) (any, bool)
+	GetReference(ReferenceValue) (any, bool)
 }
 
 // EncodeValues encodes a value into a bytes, recursively resolving any internal type data.
@@ -102,7 +102,7 @@ func EncodeValues(value any, references ReferenceProvider) ([]byte, error) {
 		return polorizer.Bytes(), nil
 
 	// Reference Type
-	case ReferenceVal:
+	case ReferenceValue:
 		// If no reference provider is given, error
 		if references == nil {
 			return nil, errors.New("encountered reference value without a ref provider")

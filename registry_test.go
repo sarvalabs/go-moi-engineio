@@ -56,7 +56,11 @@ func (m *mockEngineRuntime) Version() string {
 	return "v0.0.0"
 }
 
-func (m *mockEngineRuntime) SpawnEngine(_ EngineFuel, _ Logic, _ CtxDriver, _ EnvDriver) (Engine, error) {
+func (m *mockEngineRuntime) SpawnEngine(
+	_ EngineFuel, _ LogicDriver, _ StateDriver, _ EnvironmentDriver,
+) (
+	Engine, error,
+) {
 	return nil, nil
 }
 
@@ -64,7 +68,7 @@ func (m *mockEngineRuntime) CompileManifest(_ EngineFuel, _ *Manifest) (*LogicDe
 	return nil, 0, nil
 }
 
-func (m *mockEngineRuntime) ValidateCalldata(_ Logic, _ IxnDriver) error {
+func (m *mockEngineRuntime) ValidateCalldata(_ LogicDriver, _ InteractionDriver) error {
 	return nil
 }
 
@@ -72,7 +76,7 @@ func (m *mockEngineRuntime) GetElementGenerator(_ ElementKind) (ManifestElementG
 	return nil, false
 }
 
-func (m *mockEngineRuntime) GetCallEncoder(_ *Callsite, _ Logic) (CallEncoder, error) {
+func (m *mockEngineRuntime) GetCallEncoder(_ *Callsite, _ LogicDriver) (CallEncoder, error) {
 	return nil, nil
 }
 

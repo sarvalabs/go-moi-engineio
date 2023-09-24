@@ -8,15 +8,14 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Callsite represents a callable point in a Logic.
-// It can be resolved from a string identifier
-// with the GetCallsite method on Logic
+// Callsite represents a callable point in a LogicDriver.
+// It can be resolved from a string identifier with the GetCallsite method on LogicDriver
 type Callsite struct {
 	Ptr  ElementPtr
 	Kind CallsiteKind
 }
 
-// CallsiteKind represents the type of callable point in a Logic.
+// CallsiteKind represents the type of callable point in a LogicDriver.
 type CallsiteKind int
 
 const (

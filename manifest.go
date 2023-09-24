@@ -168,7 +168,7 @@ type ManifestHeader struct {
 }
 
 // LogicEngine returns the normalized form of the logic engine value in the ManifestHeader.
-// It is capitalized to uppercase letter and converted into a types.LogicEngine
+// It is capitalized to uppercase letter and converted into an EngineKind
 func (header ManifestHeader) LogicEngine() EngineKind {
 	return EngineKind(strings.ToUpper(header.Engine.Kind))
 }

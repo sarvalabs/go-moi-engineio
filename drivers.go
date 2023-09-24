@@ -7,10 +7,10 @@ import (
 	"github.com/sarvalabs/go-polo"
 )
 
-// EnvDriver represents a driver for environmental information.
+// EnvironmentDriver represents a driver for environmental information.
 // It describes information about the execution context such
 // as the consensus cluster ID or execution timestamp.
-type EnvDriver interface {
+type EnvironmentDriver interface {
 	Timestamp() int64
 	ClusterID() string
 }
@@ -22,6 +22,7 @@ type EnvDriver interface {
 // the pointers being vertices and their relationship being directional edges.
 type DependencyDriver interface {
 	fmt.Stringer
+
 	json.Marshaler
 	json.Unmarshaler
 
@@ -38,10 +39,10 @@ type DependencyDriver interface {
 	Dependencies(uint64) []uint64
 }
 
-// CryptoDriver represents an interface for cryptographic operations.
+// CryptographyDriver represents an interface for cryptographic operations.
 // It can be used to validate signature formats and verify them for a public key.
 // This interfaces allows us to pass the capabilities of go-moi's crypto package to different engine runtimes.
-type CryptoDriver interface {
+type CryptographyDriver interface {
 	ValidateSignature(sig []byte) bool
 	VerifySignature(data, sig, pub []byte) (bool, error)
 }

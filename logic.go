@@ -2,37 +2,38 @@ package engineio
 
 import "github.com/sarvalabs/go-moi-identifiers"
 
+// LogicDriver is an interface for logic that can be executed within an Engine.
 // Logic is an interface for logic that can be executed within an Engine.
 // Every logic is uniquely identified with a LogicID and serves as a source of code, elements and metadata
-// that the Engine and its EngineRuntime can use during execution of a specific callsite within the Logic.
+// that the Engine and its EngineRuntime can use during execution of a specific callsite within the LogicDriver.
 //
-// A Logic can usually be constructed with the information available within a LogicDescriptor.
+// A LogicDriver can usually be constructed with the information available within a LogicDescriptor.
 // For example, go-moi uses the LogicDescriptor as the source for generating a state.LogicObject
-// which implements the Logic interface and is the canonical object for all logic content.
+// which implements the LogicDriver interface and is the canonical object for all logic content.
 //
-// The Logic contains within it one or more Callsite entries that can be called using
+// The LogicDriver contains within it one or more Callsite entries that can be called using
 // the Call method on Engine. It also contains descriptions for various logical elements,
 // addressed by their ElementPtr identifiers and Classdef entries for custom class definitions.
-type Logic interface {
-	// LogicID returns the unique Logic ID of the Logic
+type LogicDriver interface {
+	// LogicID returns the unique Logic ID of the LogicDriver
 	LogicID() identifiers.LogicID
-	// Engine returns the EngineKind of the Logic
+	// Engine returns the EngineKind of the LogicDriver
 	Engine() EngineKind
 	// Manifest returns the hash of the logic's Manifest
 	Manifest() Hash
 
-	// IsSealed returns whether the state of the Logic has been sealed
+	// IsSealed returns whether the state of the LogicDriver has been sealed
 	IsSealed() bool
-	// IsAssetLogic returns whether the Logic is used for regulating an Asset
+	// IsAssetLogic returns whether the LogicDriver is used for regulating an Asset
 	IsAssetLogic() bool
-	// IsInteractive returns whether the Logic supports Interactable Callsites
+	// IsInteractive returns whether the LogicDriver supports Interactable Callsites
 	IsInteractive() bool
 
 	// PersistentState returns the pointer to the persistent state element
-	// with a confirmation that the Logic defines a PersistentState
+	// with a confirmation that the LogicDriver defines a PersistentState
 	PersistentState() (ElementPtr, bool)
 	// EphemeralState returns the pointer to the ephemeral state element
-	// with a confirmation that the Logic defines a EphemeralState
+	// with a confirmation that the LogicDriver defines a EphemeralState
 	EphemeralState() (ElementPtr, bool)
 
 	// GetElementDeps returns the aggregated dependencies of an element pointer.
@@ -49,9 +50,9 @@ type Logic interface {
 // LogicDescriptor is a container type returned by the CompileManifest method of EngineRuntime.
 // It allows different engine runtime to have a unified output standard when compiling manifests.
 //
-// It serves as a source of information from which an object that implements the Logic interface
-// can be generated. It contains within it the manifest's runtime engine, raw contents and hash
-// apart from entries for the callsites and classdefs.
+// It serves as a source of information from which an object that implements the LogicDriver
+// interface can be generated. It contains within it the manifest's runtime engine, raw contents
+// and hash apart from entries for the callsites and classdefs.
 type LogicDescriptor struct {
 	Engine EngineKind
 
@@ -59,9 +60,9 @@ type LogicDescriptor struct {
 	ManifestHash Hash
 	Interactive  bool
 
-	Dependency DependencyDriver
+	States     StateMatrix
 	Elements   LogicElementTable
-	CtxState   ContextStateMatrix
+	Dependency DependencyDriver
 
 	Callsites map[string]*Callsite
 	Classdefs map[string]*Classdef
@@ -90,7 +91,7 @@ type (
 	ElementPtr = uint64
 )
 
-// Classdef represents a class definition in a Logic.
+// Classdef represents a class definition in a LogicDriver.
 // It can be resolved from a string by looking it up on the LogicDriver
 type Classdef struct {
 	Ptr ElementPtr
