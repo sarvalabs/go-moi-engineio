@@ -9,19 +9,19 @@ import (
 func TestRegisterEngineRuntime(t *testing.T) {
 	// register a mock engine runtime
 	mock := &mockEngineRuntime{kind: PISA}
-	RegisterRuntime(mock, nil)
+	RegisterRuntime(mock)
 
 	// verify that the engine runtime was registered correctly
-	r, ok := FetchEngineRuntime(PISA)
+	r, ok := FetchRuntime(PISA)
 	require.True(t, ok, "Expected engine runtime to be registered")
 	require.Equal(t, r.Kind(), PISA, "Expected registered engine runtime to have kind %s, but got %s", PISA, r.Kind())
 
 	// overwrite the mock engine runtime with a new one
 	mock2 := &mockEngineRuntime{kind: PISA}
-	RegisterRuntime(mock2, nil)
+	RegisterRuntime(mock2)
 
 	// verify that the new engine runtime was registered correctly
-	r, ok = FetchEngineRuntime(PISA)
+	r, ok = FetchRuntime(PISA)
 	require.True(t, ok, "Expected engine runtime to be registered")
 	require.Equal(t, r.Kind(), PISA, "Expected registered engine runtime to have kind %s, but got %s", PISA, r.Kind())
 
@@ -30,15 +30,15 @@ func TestRegisterEngineRuntime(t *testing.T) {
 
 func TestFetchEngineRuntime(t *testing.T) {
 	// fetch an unregistered engine runtime
-	_, ok := FetchEngineRuntime(MERU)
+	_, ok := FetchRuntime(MERU)
 	require.False(t, ok, "Expected engine runtime not to be registered")
 
 	// register a mock engine runtime
 	mock := &mockEngineRuntime{kind: MERU}
-	RegisterRuntime(mock, nil)
+	RegisterRuntime(mock)
 
 	// fetch the registered engine runtime
-	r, ok := FetchEngineRuntime(MERU)
+	r, ok := FetchRuntime(MERU)
 	require.True(t, ok, "Expected engine runtime to be registered")
 	require.Equal(t, r.Kind(), MERU, "Expected registered engine runtime to have kind %s, but got %s", MERU, r.Kind())
 }

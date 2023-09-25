@@ -178,7 +178,7 @@ func (header ManifestHeader) validate() error {
 		return errors.New("unsupported manifest syntax")
 	}
 
-	if _, ok := FetchEngineRuntime(header.LogicEngine()); !ok {
+	if _, ok := FetchRuntime(header.LogicEngine()); !ok {
 		return errors.New("unsupported manifest engine: element registry not found")
 	}
 
@@ -209,7 +209,7 @@ func (manifest *Manifest) Depolorize(depolorizer *polo.Depolorizer) (err error) 
 		return err
 	}
 
-	runtime, _ := FetchEngineRuntime(manifest.Header().LogicEngine())
+	runtime, _ := FetchRuntime(manifest.Header().LogicEngine())
 
 	manifest.Elements = make([]ManifestElement, 0, len(raw.Elements))
 
@@ -264,7 +264,7 @@ func (manifest *Manifest) UnmarshalJSON(data []byte) (err error) {
 		return err
 	}
 
-	runtime, _ := FetchEngineRuntime(manifest.Header().LogicEngine())
+	runtime, _ := FetchRuntime(manifest.Header().LogicEngine())
 
 	manifest.Elements = make([]ManifestElement, 0, len(raw.Elements))
 
@@ -314,7 +314,7 @@ func (manifest *Manifest) UnmarshalYAML(node *yaml.Node) error {
 		return err
 	}
 
-	runtime, _ := FetchEngineRuntime(manifest.Header().LogicEngine())
+	runtime, _ := FetchRuntime(manifest.Header().LogicEngine())
 
 	manifest.Elements = make([]ManifestElement, 0, len(raw.Elements))
 

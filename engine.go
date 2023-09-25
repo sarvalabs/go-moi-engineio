@@ -79,3 +79,24 @@ type EngineRuntime interface {
 	// ErrorResult that is used by the engine runtime
 	DecodeErrorResult([]byte) (ErrorResult, error)
 }
+
+// registry is an in-memory registry of supported EngineRuntime instances.
+// Support for different engine runtimes is only available if they are first registered with this package.
+var registry = map[EngineKind]EngineRuntime{}
+
+// RegisterRuntime registers an EngineRuntime with the package.
+// If a runtime instance already exists for the EngineKind, it is overwritten.
+func RegisterRuntime(runtime EngineRuntime) {
+	registry[runtime.Kind()] = runtime
+}
+
+// FetchRuntime retrieves an EngineRuntime for a given EngineKind.
+// If the runtime for the engine kind is not registered, returns false.
+func FetchRuntime(kind EngineKind) (EngineRuntime, bool) {
+	runtime, exists := registry[kind]
+	if !exists {
+		return nil, false
+	}
+
+	return runtime, true
+}
