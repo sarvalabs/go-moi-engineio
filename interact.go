@@ -15,6 +15,7 @@ type InteractionType interface {
 // other information such as the Interaction's fuel parameters or transfer funds.
 type InteractionDriver interface {
 	InteractionType() InteractionType
+	Supports(Callsite) bool
 
 	FuelPrice() *big.Int
 	FuelLimit() uint64

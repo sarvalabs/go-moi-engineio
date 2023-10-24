@@ -10,13 +10,18 @@ type CallResult interface {
 	// Fuel specifies the amount of EngineFuel that was consumed
 	// for the execution call regardless of its successful run.
 	Fuel() EngineFuel
-	// Outputs returns the encoded outputs for the execution call.
-	// May be nil if the call has no return values
+
+	// Engine specifies the engine kind
+	// that generated the CallResult
+	Engine() EngineKind
+
+	// Outputs returns the outputs for the execution call.
+	// The output data must be polo document-encoded and
+	// may be nil if the call has no return values
 	Outputs() []byte
 
 	// Error returns the encoded error for the execution call (if any).
 	// Must return a non-nil value if Ok() is false and vice versa.
-	//
 	// The output bytes must be decodable into an ErrorResult
 	// using the DecodeErrorResult method of EngineRuntime
 	Error() []byte
@@ -27,8 +32,12 @@ type CallResult interface {
 //
 // It can be decoded from the raw data using the DecodeErrorResult method of EngineRuntime
 type ErrorResult interface {
+	// Engine specifies the engine kind
+	// that generated the ErrorResult
 	Engine() EngineKind
+	// String returns a string representation of ErrorResult
 	String() string
+	// Bytes returns the bytes representation of ErrorResult
 	Bytes() []byte
 	Reverted() bool
 }

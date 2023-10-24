@@ -1,10 +1,7 @@
 package engineio
 
 import (
-	"encoding/json"
 	"fmt"
-
-	"github.com/sarvalabs/go-polo"
 )
 
 // EnvironmentDriver represents a driver for environmental information.
@@ -16,18 +13,10 @@ type EnvironmentDriver interface {
 }
 
 // DependencyDriver represents an interface for an engine's element dependency manager.
-//
-// It must be expressible as a string and encodable with JSON and POLO.
 // It manages the dependency relationship between element pointers with
 // the pointers being vertices and their relationship being directional edges.
 type DependencyDriver interface {
 	fmt.Stringer
-
-	json.Marshaler
-	json.Unmarshaler
-
-	polo.Polorizable
-	polo.Depolorizable
 
 	Insert(uint64, ...uint64)
 	Remove(uint64)

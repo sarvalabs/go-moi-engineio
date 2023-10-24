@@ -3,7 +3,6 @@ package engineio
 import "github.com/sarvalabs/go-moi-identifiers"
 
 // LogicDriver is an interface for logic that can be executed within an Engine.
-// Logic is an interface for logic that can be executed within an Engine.
 // Every logic is uniquely identified with a LogicID and serves as a source of code, elements and metadata
 // that the Engine and its EngineRuntime can use during execution of a specific callsite within the LogicDriver.
 //
@@ -58,14 +57,14 @@ type LogicDescriptor struct {
 
 	ManifestRaw  []byte
 	ManifestHash Hash
-	Interactive  bool
+	Interactable  bool
 
 	States     StateMatrix
 	Elements   LogicElementTable
 	Dependency DependencyDriver
 
-	Callsites map[string]*Callsite
-	Classdefs map[string]*Classdef
+	Callsites map[string]Callsite
+	Classdefs map[string]Classdef
 }
 
 // LogicElementTable is a lookup map for LogicElements indexed by their ElementPtr
@@ -82,17 +81,4 @@ type LogicElement struct {
 	Deps []ElementPtr
 	// Data represents the data container for the element
 	Data []byte
-}
-
-type (
-	// ElementKind is a type alias for an element kind string
-	ElementKind string
-	// ElementPtr is a type alias for an element pointer
-	ElementPtr = uint64
-)
-
-// Classdef represents a class definition in a LogicDriver.
-// It can be resolved from a string by looking it up on the LogicDriver
-type Classdef struct {
-	Ptr ElementPtr
 }
