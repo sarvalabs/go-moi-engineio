@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/sarvalabs/go-moi-identifiers"
 	"github.com/sarvalabs/go-polo"
 	"gopkg.in/yaml.v3"
 )
@@ -11,8 +12,6 @@ import (
 type (
 	// Hash is a 256-bit checksum digest
 	Hash = [32]byte
-	// Address is a 256-bit unique identifier for a participant.
-	Address = [32]byte
 )
 
 // CtxDriver represents an interface for accessing and manipulating
@@ -20,8 +19,8 @@ type (
 // of particular account and can only mutate within applicable portions
 // of the context state within the bounds of the logic's namespace
 type CtxDriver interface {
-	Address() Address
-	LogicID() LogicID
+	Address() identifiers.Address
+	LogicID() identifiers.LogicID
 
 	GetStorageEntry([]byte) ([]byte, bool)
 	SetStorageEntry([]byte, []byte) bool
