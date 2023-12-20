@@ -1,5 +1,7 @@
 package engineio
 
+import "github.com/sarvalabs/go-moi-identifiers"
+
 // Logic is an interface for logic that can be executed within an Engine.
 // Every logic is uniquely identified with a LogicID and serves as a source of code, elements and metadata
 // that the Engine and its EngineRuntime can use during execution of a specific callsite within the Logic.
@@ -13,7 +15,7 @@ package engineio
 // addressed by their ElementPtr identifiers and Classdef entries for custom class definitions.
 type Logic interface {
 	// LogicID returns the unique Logic ID of the Logic
-	LogicID() LogicID
+	LogicID() identifiers.LogicID
 	// Engine returns the EngineKind of the Logic
 	Engine() EngineKind
 	// Manifest returns the hash of the logic's Manifest
@@ -42,17 +44,6 @@ type Logic interface {
 	GetCallsite(string) (*Callsite, bool)
 	// GetClassdef returns class Datatype for a given string name with confirmation of its existence.
 	GetClassdef(string) (*Classdef, bool)
-}
-
-// LogicID is a unique identifier for a LogicDriver and contains
-// within it a 256-bit address that must be retrievable with Address()
-//
-// It is implemented by the common.LogicID on go-moi. The spec for which is available at
-// https://sarvalabs.notion.site/Logic-ID-Standard-174a2cc6e3dc42e4bbf4dd708af0cd03?pvs=4
-type LogicID interface {
-	String() string
-	Bytes() []byte
-	Address32() [32]byte
 }
 
 // LogicDescriptor is a container type returned by the CompileManifest method of EngineRuntime.
