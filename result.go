@@ -30,4 +30,5 @@ type ErrorResult interface {
 	Engine() EngineKind
 	String() string
 	Bytes() []byte
+	Reverted() bool
 }
