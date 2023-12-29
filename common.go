@@ -1,13 +1,6 @@
 package engineio
 
 type (
-	// Hash is a 256-bit checksum digest
-	Hash = [32]byte
-	// Address is a 256-bit unique identifier for a participant.
-	Address = [32]byte
-)
-
-type (
 	// ElementKind is a type alias for an element kind string
 	ElementKind string
 	// ElementPtr is a type alias for an element pointer
@@ -35,8 +28,8 @@ type Callsite interface {
 type CallsiteKind int
 
 const (
-	DeployerCallsite CallsiteKind = iota
-	EnlisterCallsite
-	InvokableCallsite
-	InteractableCallsite
+	CallsiteDeployer CallsiteKind = iota
+	CallsiteEnlister
+	CallsiteInvokable
+	CallsiteInteractable
 )

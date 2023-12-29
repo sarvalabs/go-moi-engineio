@@ -1,11 +1,13 @@
 package engineio
 
+import "github.com/sarvalabs/go-moi-identifiers"
+
 // StateDriver represents an interface for accessing and manipulating state information of an account.
 // It is bounded to a particular account and can only mutate within applicable portions
 // of the state within the bounds of the logic's namespace
 type StateDriver interface {
-	Address() Address
-	LogicID() LogicID
+	Address() identifiers.Address
+	LogicID() identifiers.LogicID
 
 	GetStorageEntry([]byte) ([]byte, bool)
 	SetStorageEntry([]byte, []byte) bool

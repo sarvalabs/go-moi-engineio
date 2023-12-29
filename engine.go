@@ -14,8 +14,8 @@ const (
 	// The canonical implementation is available at https://github.com/sarvalabs/go-pisa
 	PISA
 
-	// MERU is the EngineKind for a hypothetical engine runtime that works as a
-	// WASI (WebAssembly) based VM Runtime for MOI. No implementation exists yet.
+	// MERU is the EngineKind for a hypothetical engine runtime that works as a WASM
+	// environment that allows custom runtime implementations to run within it
 	MERU
 )
 
@@ -42,15 +42,15 @@ type EngineInstance interface {
 // used for runtime level behavioural capabilities rather for logic execution.
 //
 // This can include:
-//   - Compiling Manifest objects for the runtime into a Logic
-//   - Spawning execution EngineInstance for a specific Logic
-//   - Validating input calldata for a specific callsite on a Logic
-//   - Obtaining a calldata encoder for a specific callsite on a Logic
+//   - Compiling Manifest objects for the runtime into a LogicDriver
+//   - Spawning execution EngineInstance for a specific LogicDriver
+//   - Validating input calldata for a specific callsite on a LogicDriver
+//   - Obtaining a calldata encoder for a specific callsite on a LogicDriver
 type EngineRuntime interface {
 	// RuntimeEncoder is an embedded interface for EngineRuntime, allowing
 	// the runtime to specify encoding/decoding rules for runtime specific
 	// types like Manifest, ErrorResult, DependencyDriver, etc.
-	// RuntimeEncoder
+	RuntimeEncoder
 
 	// Kind returns the kind of engine that the factory can produce
 	Kind() EngineKind
@@ -60,13 +60,13 @@ type EngineRuntime interface {
 	// GenerateRuntimeEncoder returns the RuntimeEncoder instance for the runtime
 	GenerateRuntimeEncoder() RuntimeEncoder
 	// GenerateCallEncoder returns a CallEncoder object for a
-	// given callsite element pointer from a Logic object
-	GenerateCallEncoder(Logic, Callsite) (CallEncoder, error)
+	// given callsite element pointer from a LogicDriver object
+	GenerateCallEncoder(LogicDriver, Callsite) (CallEncoder, error)
 
 	// SpawnInstance returns a new EngineInstance instance and initializes it with some
-	// EngineFuel, a Logic, the StateDriver associated with the logic and an EnvironmentDriver.
+	// EngineFuel, a LogicDriver, the StateDriver associated with the logic and an EnvironmentDriver.
 	// Will return an error if the Logic and its StateDriver do not match.
-	SpawnInstance(Logic, EngineFuel, StateDriver, EnvironmentDriver) (EngineInstance, error)
+	SpawnInstance(LogicDriver, EngineFuel, StateDriver, EnvironmentDriver) (EngineInstance, error)
 
 	// CompileManifest generates a LogicDescriptor from a Manifest, which can then be used to generate
 	// a Logic object. The fuel spent during compile is returned with any potential error.
@@ -74,7 +74,7 @@ type EngineRuntime interface {
 
 	// ValidateCalldata verifies the calldata and callsite in an InteractionDriver.
 	// The Logic must describe a callsite which accepts the calldata.
-	ValidateCalldata(Logic, InteractionDriver) error
+	ValidateCalldata(LogicDriver, InteractionDriver) error
 }
 
 // registry is an in-memory registry of supported EngineRuntime instances.

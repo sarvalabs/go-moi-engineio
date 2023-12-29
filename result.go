@@ -32,12 +32,12 @@ type CallResult interface {
 //
 // It can be decoded from the raw data using the DecodeErrorResult method of EngineRuntime
 type ErrorResult interface {
-	// Engine specifies the engine kind
-	// that generated the ErrorResult
+	// Engine specifies the engine kind that generated the ErrorResult
 	Engine() EngineKind
 	// String returns a string representation of ErrorResult
 	String() string
 	// Bytes returns the bytes representation of ErrorResult
 	Bytes() []byte
+	// Reverted returns whether the ErrorResult has a reversion flag
 	Reverted() bool
 }

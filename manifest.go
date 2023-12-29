@@ -7,7 +7,7 @@ package engineio
 type Manifest interface {
 	// Kind returns the kind of engine of the Manifest
 	Kind() EngineKind
-	// Hash returns the 256-bit hash of the Manifest.
+	// Hash returns the 256-bit digest of the Manifest.
 	Hash() [32]byte
 	// Size returns the number of elements in the Manifest
 	Size() uint64
@@ -32,6 +32,14 @@ type Manifest interface {
 	GenerateCallEncoder(Callsite) (CallEncoder, error)
 }
 
+// ManifestHeader represents the header for a Manifest and describes its syntax form
+// and engine specification. Useful for determining which engine to use to handle the
+// Manifest. Every engine's manifest implementation must be able to decode into this header.
+type ManifestHeader struct {
+	Syntax uint64         `yaml:"syntax" json:"syntax"`
+	Engine ManifestEngine `yaml:"engine" json:"engine"`
+}
+
 // ManifestEngine describes the engine specification in the Manifest
 type ManifestEngine struct {
 	Kind  EngineKind
@@ -50,12 +58,4 @@ type ManifestElement struct {
 	Deps []ElementPtr
 	Kind ElementKind
 	Data any
-}
-
-// ManifestHeader represents the header for a Manifest and describes its syntax form
-// and engine specification. Useful for determining which engine to use to handle the
-// Manifest. Every engine's manifest implementation must be able to decode into this header.
-type ManifestHeader struct {
-	Syntax uint64         `yaml:"syntax" json:"syntax"`
-	Engine ManifestEngine `yaml:"engine" json:"engine"`
 }

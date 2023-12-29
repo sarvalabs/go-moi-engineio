@@ -18,15 +18,13 @@ type LogicDriver interface {
 	LogicID() identifiers.LogicID
 	// Engine returns the EngineKind of the LogicDriver
 	Engine() EngineKind
-	// Manifest returns the hash of the logic's Manifest
-	Manifest() Hash
+	// ManifestHash returns the 256-bit digest hash of the logic's Manifest
+	ManifestHash() [32]byte
 
 	// IsSealed returns whether the state of the LogicDriver has been sealed
 	IsSealed() bool
-	// IsAssetLogic returns whether the LogicDriver is used for regulating an Asset
-	IsAssetLogic() bool
-	// IsInteractive returns whether the LogicDriver supports Interactable Callsites
-	IsInteractive() bool
+	// IsInteractable returns whether the LogicDriver supports Interactable Callsites
+	IsInteractable() bool
 
 	// PersistentState returns the pointer to the persistent state element
 	// with a confirmation that the LogicDriver defines a PersistentState
@@ -35,15 +33,16 @@ type LogicDriver interface {
 	// with a confirmation that the LogicDriver defines a EphemeralState
 	EphemeralState() (ElementPtr, bool)
 
-	// GetElementDeps returns the aggregated dependencies of an element pointer.
-	// The aggregation includes all sub-dependencies recursively.
-	GetElementDeps(ElementPtr) []ElementPtr
-	// GetElement returns the LogicElement for a given element pointer with confirmation of its existence.
-	GetElement(ElementPtr) (*LogicElement, bool)
 	// GetCallsite returns Callsite for a given string name with confirmation of its existence.
 	GetCallsite(string) (*Callsite, bool)
 	// GetClassdef returns class Datatype for a given string name with confirmation of its existence.
 	GetClassdef(string) (*Classdef, bool)
+
+	// GetElement returns the LogicElement for a given element pointer with confirmation of its existence.
+	GetElement(ElementPtr) (*LogicElement, bool)
+	// GetElementDeps returns the aggregated dependencies of an element pointer.
+	// The aggregation includes all sub-dependencies recursively.
+	GetElementDeps(ElementPtr) []ElementPtr
 }
 
 // LogicDescriptor is a container type returned by the CompileManifest method of EngineRuntime.
@@ -55,9 +54,9 @@ type LogicDriver interface {
 type LogicDescriptor struct {
 	Engine EngineKind
 
-	ManifestRaw  []byte
-	ManifestHash Hash
-	Interactable  bool
+	ManifestData []byte
+	ManifestHash [32]byte
+	Interactable bool
 
 	States     StateMatrix
 	Elements   LogicElementTable
