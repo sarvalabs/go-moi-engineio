@@ -34,9 +34,9 @@ type LogicDriver interface {
 	EphemeralState() (ElementPtr, bool)
 
 	// GetCallsite returns Callsite for a given string name with confirmation of its existence.
-	GetCallsite(string) (*Callsite, bool)
+	GetCallsite(string) (Callsite, bool)
 	// GetClassdef returns class Datatype for a given string name with confirmation of its existence.
-	GetClassdef(string) (*Classdef, bool)
+	GetClassdef(string) (Classdef, bool)
 
 	// GetElement returns the LogicElement for a given element pointer with confirmation of its existence.
 	GetElement(ElementPtr) (*LogicElement, bool)
